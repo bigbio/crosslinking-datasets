@@ -38,9 +38,11 @@ This directory contains template SDRF files that can be used as a starting point
 - **comment[modification parameters]**: Variable modifications (oxidation, deamidation, etc.)
   - Format: `<ontology>:<id>; <modification name>; TA:<mass>`
   - Example: `MS:1001460; Oxidation; TA:15.99491`
+  - **Note**: Multiple `comment[modification parameters]` columns can exist in the same SDRF file to represent different types of modifications (e.g., one for variable PTMs, another for the crosslinker)
 - **comment[modification parameters]** (crosslinker): Crosslinker modification
   - Format: `<ontology>:<id>; <crosslinker name>; TA:<mass>`
   - Example: `UNIMOD:1896; DSS crosslink; TA:138.06808`
+  - This is typically in a separate column from other modification parameters to distinguish crosslinker modifications
 - **comment[cleavage agent details]**: Protease used for digestion
   - Format: `<ontology>:<id>; <protease name>`
   - Example: `MS:1001251; Trypsin`
