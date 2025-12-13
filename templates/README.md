@@ -36,11 +36,14 @@ This directory contains template SDRF files that can be used as a starting point
 #### Instrument and Analysis Parameters
 - **comment[instrument]**: Mass spectrometry instrument model
 - **comment[modification parameters]**: Variable modifications (oxidation, deamidation, etc.)
-  - Format: `NT:<id>; NT:<modification name>; TA:<mass>`
+  - Format: `<ontology>:<id>; <modification name>; TA:<mass>`
+  - Example: `MS:1001460; Oxidation; TA:15.99491`
 - **comment[modification parameters]** (crosslinker): Crosslinker modification
-  - Format: `NT:<id>; NT:<crosslinker name>; TA:<mass>`
+  - Format: `<ontology>:<id>; <crosslinker name>; TA:<mass>`
+  - Example: `UNIMOD:1896; DSS crosslink; TA:138.06808`
 - **comment[cleavage agent details]**: Protease used for digestion
-  - Format: `NT:<id>; NT:<protease name>`
+  - Format: `<ontology>:<id>; <protease name>`
+  - Example: `MS:1001251; Trypsin`
 
 #### Data Files
 - **comment[data file]**: Raw data file name
@@ -60,10 +63,18 @@ This directory contains template SDRF files that can be used as a starting point
 ### Ontology Terms
 
 Use appropriate ontology terms where possible:
-- **MS ontology (MS)** for mass spectrometry instruments and methods
-- **PRIDE ontology (PRIDE)** for proteomics-specific terms
-- **UNIMOD** for modifications
-- **EFO** (Experimental Factor Ontology) for biological characteristics
+- **MS** (Mass Spectrometry ontology) for mass spectrometry instruments and methods - prefix: `MS:`
+- **UNIMOD** for modifications - prefix: `UNIMOD:`
+- **PRIDE** (PRIDE ontology) for proteomics-specific terms - prefix: `PRIDE:`
+- **NCBITaxon** for organisms - prefix: `NCBITaxon:`
+- **EFO** (Experimental Factor Ontology) for biological characteristics - prefix: `EFO:`
+
+Format: `<ontology>:<id>; <term name>; [TA:<value>]`
+
+Examples:
+- `MS:1001251; Trypsin` (protease)
+- `MS:1001460; Oxidation; TA:15.99491` (variable modification)
+- `UNIMOD:1896; DSS crosslink; TA:138.06808` (crosslinker)
 
 ### Validation
 

@@ -82,14 +82,18 @@ Crosslinker information should be specified:
 ### Ontology Terms
 Use standard ontology terms when available:
 - **PSI-MS** (Proteomics Standards Initiative Mass Spectrometry): `MS:` prefix
-- **PRIDE**: `PRIDE:` prefix
-- **UNIMOD**: For modifications
-- **NEWT/NCBITaxon**: For organisms
-- **EFO**: For experimental factors
+  - Example: `MS:1001251; Trypsin`
+- **UNIMOD**: `UNIMOD:` prefix for modifications
+  - Example: `UNIMOD:1896; DSS crosslink; TA:138.06808`
+- **PRIDE**: `PRIDE:` prefix for proteomics-specific terms
+- **NCBITaxon**: `NCBITaxon:` prefix for organisms
+  - Example: `NCBITaxon:9606; Homo sapiens`
+- **EFO**: `EFO:` prefix for experimental factors
+  - Example: `EFO:0000001; experimental factor`
 
-Format: `<ontology>:<id>; <ontology>:<term>; [TA:<value>]`
+Format: `<ontology>:<id>; <term name>; [TA:<value>]`
 
-Example: `MS:1001251; MS:Trypsin`
+Example: `MS:1001460; Oxidation; TA:15.99491`
 
 ## Quality Guidelines
 
