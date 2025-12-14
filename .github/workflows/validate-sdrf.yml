@@ -55,11 +55,12 @@ jobs:
             if [ -f "$file" ]; then
               echo "::group::Validating $file"
               
-              # Run validation with offline cache to avoid network issues
-              if parse_sdrf validate-sdrf --sdrf_file "$file" --use_ols_cache_only; then
+              # Run validation
+              if parse_sdrf validate-sdrf --sdrf_file "$file"; then
                 echo "✓ $file passed validation"
               else
-                echo "::error file=$file::SDRF validation failed"
+                EXIT_CODE=$?
+                echo "::error file=$file::SDRF validation failed with exit code $EXIT_CODE"
                 VALIDATION_FAILED=1
               fi
               

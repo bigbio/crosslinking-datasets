@@ -59,12 +59,19 @@ SDRF files should be validated before submission. You can use tools like:
 - [sdrf-pipelines](https://github.com/bigbio/sdrf-pipelines) for validation
 - ProteomeXchange submission validation tools
 
+**Automated Validation**: All pull requests that modify `*.sdrf.tsv` files are automatically validated using the sdrf-pipelines tool before they can be merged into the main branch. The validation checks:
+- File format and structure
+- Required columns presence
+- Ontology term correctness
+- Data consistency
+
 ## Contributing
 
 To contribute a new SDRF file:
 1. Fork this repository
 2. Add your SDRF file following the structure above
 3. Submit a pull request with a description of the dataset
+4. Ensure your SDRF file passes automated validation
 
 ## Resources
 
