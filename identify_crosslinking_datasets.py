@@ -11,7 +11,7 @@ import os
 import re
 import sys
 from collections import defaultdict
-from typing import Dict, List, Set, Iterator
+from typing import Dict, List
 
 # Configure logging
 logging.basicConfig(
