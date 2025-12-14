@@ -11,7 +11,7 @@ import os
 import re
 import sys
 from collections import defaultdict
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 # Configure logging
 logging.basicConfig(
@@ -310,7 +310,7 @@ def count_raw_files(files_metadata: List[dict]) -> Dict[str, int]:
     logger.info(f"Found {raw_files_found:,} raw files across {len(raw_file_counts):,} projects")
     return dict(raw_file_counts)
 
-def process_single_project(project: dict, raw_file_counts: Dict[str, int], use_llm: bool, keywords: List[str], llm_model: str, llm_temperature: float, stats: dict) -> dict:
+def process_single_project(project: dict, raw_file_counts: Dict[str, int], use_llm: bool, keywords: List[str], llm_model: str, llm_temperature: float, stats: dict) -> Optional[dict]:
     """Process a single project and return project data if it's a crosslinking dataset.
     
     Args:
@@ -320,7 +320,7 @@ def process_single_project(project: dict, raw_file_counts: Dict[str, int], use_l
         keywords: List of keywords for keyword-based filtering
         llm_model: LLM model name
         llm_temperature: LLM temperature
-        stats: Dictionary to update with statistics (keyword_matches, llm_verified)
+        stats: Dictionary with keys "keyword_matches" and "llm_verified" (both int) to update with statistics
     
     Returns:
         Project dictionary if it's a crosslinking dataset, None otherwise
