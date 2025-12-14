@@ -161,7 +161,7 @@ def is_crosslinking_dataset_llm(project: dict, model_name: str = 'llama3.2', tem
     if not text_to_analyze:
         return False
     
-    # Truncate if too long (keep first chars for context)
+    # Truncate if too long (keep first MAX_LLM_CONTEXT_LENGTH chars for context)
     if len(text_to_analyze) > MAX_LLM_CONTEXT_LENGTH:
         text_to_analyze = text_to_analyze[:MAX_LLM_CONTEXT_LENGTH] + "..."
     
