@@ -122,6 +122,17 @@ Before submitting, ensure your SDRF file:
 4. ✓ Includes all required columns
 5. ✓ Has no empty required fields
 
+**Automated Validation**: All pull requests that modify `*.sdrf.tsv` files will be automatically validated by our GitHub Actions workflow. The workflow:
+- Detects all changed SDRF files in the PR
+- Validates each file using `sdrf-pipelines`
+- Reports any validation errors as PR check failures
+- Must pass before the PR can be merged
+
+You can validate locally before pushing using:
+```bash
+parse_sdrf validate-sdrf --sdrf_file datasets/PXD012345/PXD012345.sdrf.tsv
+```
+
 ## Pull Request Guidelines
 
 ### PR Title
