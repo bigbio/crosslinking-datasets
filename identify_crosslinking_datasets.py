@@ -190,7 +190,7 @@ Respond with ONLY "YES" if this is a crosslinking/proximity labeling dataset, or
         except Exception as e:
             # Try with :latest suffix if model not found
             if ':latest' not in model_name:
-                logger.debug(f"Model {model_name} not found, trying {model_name}:latest")
+                logger.debug(f'Model {model_name} not found, trying {model_name}:latest')
                 try:
                     response = ollama.chat(
                         model=f"{model_name}:latest",
