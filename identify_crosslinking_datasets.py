@@ -11,7 +11,7 @@ import os
 import re
 import sys
 from collections import defaultdict
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 # Configure logging
 logging.basicConfig(
@@ -320,7 +320,7 @@ def count_raw_files(files_metadata: List[dict]) -> Dict[str, int]:
 
 def _process_single_project(project: dict, raw_file_counts: Dict[str, int], use_llm: bool, 
                             keywords: List[str], llm_model: str, llm_temperature: float,
-                            stats: dict) -> dict:
+                            stats: dict) -> Optional[dict]:
     """
     Process a single project and determine if it's a crosslinking dataset.
     
