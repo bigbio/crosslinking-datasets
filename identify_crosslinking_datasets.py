@@ -11,7 +11,7 @@ import os
 import re
 import sys
 from collections import defaultdict
-from typing import Dict, List, Set, Iterator
+from typing import Dict, List
 
 # Configure logging
 logging.basicConfig(
@@ -20,6 +20,9 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 logger = logging.getLogger(__name__)
+
+# Maximum length of text to send to LLM for classification
+MAX_LLM_CONTEXT_LENGTH = 2000
 
 def fix_json_string(s: str) -> str:
     """Fix JSON string by escaping unescaped newlines inside string values only."""
@@ -85,7 +88,12 @@ def load_json_file_robust(filepath: str):
             content_clean = re.sub(rb'[\x00-\x08\x0b-\x0c\x0e-\x1f\x7f-\x9f]', b'', content)
             logger.info("Parsing JSON with orjson...")
             result = orjson.loads(content_clean)
-            logger.info(f"Successfully loaded JSON with orjson (found {len(result) if isinstance(result, list) else 'object'} items)")
+            if isinstance(result, list):
+                logger.info(f"Successfully loaded JSON with orjson (found list with {len(result)} items)")
+            elif isinstance(result, dict):
+                logger.info(f"Successfully loaded JSON with orjson (found dict with {len(result)} keys)")
+            else:
+                logger.info(f"Successfully loaded JSON with orjson (found {type(result).__name__})")
             return result
     except Exception as e:
         logger.info(f"orjson loading failed: {e}, falling back to standard json")
@@ -111,7 +119,12 @@ def load_json_file_robust(filepath: str):
     try:
         logger.info("Parsing JSON...")
         result = json.loads(content_str)
-        logger.info(f"Successfully loaded JSON (found {len(result) if isinstance(result, list) else 'object'} items)")
+        if isinstance(result, list):
+            logger.info(f"Successfully loaded JSON (found list with {len(result)} items)")
+        elif isinstance(result, dict):
+            logger.info(f"Successfully loaded JSON (found dict with {len(result)} keys)")
+        else:
+            logger.info(f"Successfully loaded JSON (found {type(result).__name__})")
         return result
     except json.JSONDecodeError as e:
         logger.error(f"JSON decode error: {e}")
@@ -153,9 +166,9 @@ def is_crosslinking_dataset_llm(project: dict, model_name: str = 'llama3.2', tem
     if not text_to_analyze:
         return False
     
-    # Truncate if too long (keep first 2000 chars for context)
-    if len(text_to_analyze) > 2000:
-        text_to_analyze = text_to_analyze[:2000] + "..."
+    # Truncate if too long (keep first MAX_LLM_CONTEXT_LENGTH chars for context)
+    if len(text_to_analyze) > MAX_LLM_CONTEXT_LENGTH:
+        text_to_analyze = text_to_analyze[:MAX_LLM_CONTEXT_LENGTH] + "..."
     
     prompt = f"""Determine if this proteomics dataset is related to crosslinking mass spectrometry (XL-MS) or proximity labeling.
 
@@ -185,7 +198,7 @@ Respond with ONLY "YES" if this is a crosslinking/proximity labeling dataset, or
         except Exception as e:
             # Try with :latest suffix if model not found
             if ':latest' not in model_name:
-                logger.debug(f"Model {model_name} not found, trying {model_name}:latest")
+                logger.debug(f'Model {model_name} not found, trying {model_name}:latest')
                 try:
                     response = ollama.chat(
                         model=f"{model_name}:latest",
@@ -334,7 +347,7 @@ def process_projects_streaming(filepath: str, raw_file_counts: Dict[str, int], u
                         if is_crosslinking_dataset_keywords(project, keywords):
                             keyword_matches += 1
                             # Verify with LLM
-                            if is_crosslinking_dataset_llm(project):
+                            if is_crosslinking_dataset_llm(project, llm_model, llm_temperature):
                                 llm_verified += 1
                                 accession = project.get('accession', '')
                                 submission_date = project.get('submissionDate', '')
