@@ -21,6 +21,10 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Progress logging intervals
+FILE_PROGRESS_INTERVAL = 100000  # Log progress every N file entries
+PROJECT_PROGRESS_INTERVAL = 10000  # Log progress every N projects
+
 def fix_json_string(s: str) -> str:
     """Fix JSON string by escaping unescaped newlines inside string values only."""
     result = []
@@ -264,7 +268,7 @@ def count_raw_files_streaming(filepath: str) -> Dict[str, int]:
             with open(filepath, 'rb') as f:
                 parser = ijson.items(f, 'item')
                 for idx, file_entry in enumerate(parser):
-                    if (idx + 1) % 100000 == 0:
+                    if (idx + 1) % FILE_PROGRESS_INTERVAL == 0:
                         logger.info(f"  Processed {idx + 1:,} file entries (found {raw_files_found:,} raw files so far)...")
                     
                     file_category = file_entry.get('fileCategory', {})
@@ -295,7 +299,7 @@ def count_raw_files(files_metadata: List[dict]) -> Dict[str, int]:
     raw_files_found = 0
     
     for idx, file_entry in enumerate(files_metadata):
-        if (idx + 1) % 100000 == 0:
+        if (idx + 1) % FILE_PROGRESS_INTERVAL == 0:
             logger.info(f"  Processed {idx + 1:,} / {len(files_metadata):,} file entries...")
         
         file_category = file_entry.get('fileCategory', {})
@@ -330,7 +334,7 @@ def process_projects_streaming(filepath: str, raw_file_counts: Dict[str, int], u
             with open(filepath, 'rb') as f:
                 parser = ijson.items(f, 'item')
                 for idx, project in enumerate(parser):
-                    if (idx + 1) % 10000 == 0:
+                    if (idx + 1) % PROJECT_PROGRESS_INTERVAL == 0:
                         logger.info(f"  Processed {idx + 1:,} projects (found {len(crosslinking_projects)} crosslinking datasets so far)...")
                     
                     # Hybrid approach: first check keywords (fast), then verify with LLM if keywords match
@@ -385,7 +389,7 @@ def process_projects_streaming(filepath: str, raw_file_counts: Dict[str, int], u
             llm_verified = 0
             
             for idx, project in enumerate(projects):
-                if (idx + 1) % 10000 == 0:
+                if (idx + 1) % PROJECT_PROGRESS_INTERVAL == 0:
                     logger.info(f"  Processed {idx + 1:,} / {len(projects):,} projects (found {len(crosslinking_projects)} crosslinking datasets so far)...")
                 
                 if use_llm:
@@ -438,7 +442,7 @@ def process_projects_streaming(filepath: str, raw_file_counts: Dict[str, int], u
         llm_verified = 0
         
         for idx, project in enumerate(projects):
-            if (idx + 1) % 10000 == 0:
+            if (idx + 1) % PROJECT_PROGRESS_INTERVAL == 0:
                 logger.info(f"  Processed {idx + 1:,} / {len(projects):,} projects (found {len(crosslinking_projects)} crosslinking datasets so far)...")
             
             if use_llm:
