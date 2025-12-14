@@ -21,6 +21,9 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Maximum length of text to send to LLM for classification
+MAX_LLM_CONTEXT_LENGTH = 2000
+
 def fix_json_string(s: str) -> str:
     """Fix JSON string by escaping unescaped newlines inside string values only."""
     result = []
@@ -158,9 +161,9 @@ def is_crosslinking_dataset_llm(project: dict, model_name: str = 'llama3.2', tem
     if not text_to_analyze:
         return False
     
-    # Truncate if too long (keep first 2000 chars for context)
-    if len(text_to_analyze) > 2000:
-        text_to_analyze = text_to_analyze[:2000] + "..."
+    # Truncate if too long (keep first chars for context)
+    if len(text_to_analyze) > MAX_LLM_CONTEXT_LENGTH:
+        text_to_analyze = text_to_analyze[:MAX_LLM_CONTEXT_LENGTH] + "..."
     
     prompt = f"""Determine if this proteomics dataset is related to crosslinking mass spectrometry (XL-MS) or proximity labeling.
 
