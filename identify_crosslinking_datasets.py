@@ -525,8 +525,8 @@ Examples:
     parser.add_argument(
         '--output',
         type=str,
-        default='crosslinking_datasets_list.json',
-        help='Output JSON file path (default: crosslinking_datasets_list.json)'
+        default='crosslinking_datasets_list.tsv',
+        help='Output TSV file path (default: crosslinking_datasets_list.tsv)'
     )
     parser.add_argument(
         '--keywords',
@@ -622,11 +622,20 @@ Examples:
     logger.info("Sorting datasets by number of raw files (descending)...")
     crosslinking_projects.sort(key=lambda x: x['numRawFiles'], reverse=True)
     
-    # Output results
+    # Output results as TSV
     output_file = args.output
     logger.info(f"Saving results to {output_file}...")
     with open(output_file, 'w', encoding='utf-8') as f:
-        json.dump(crosslinking_projects, f, indent=2, ensure_ascii=False)
+        # Write header
+        f.write('Accession\tSubmission Date\tTitle\tNumber of Raw Files\n')
+        
+        # Write data rows
+        for item in crosslinking_projects:
+            accession = item.get('accession', '')
+            submission_date = item.get('submissionDate', '')
+            title = item.get('title', '').replace('\t', ' ').replace('\n', ' ').replace('\r', ' ')
+            num_raw_files = item.get('numRawFiles', 0)
+            f.write(f'{accession}\t{submission_date}\t{title}\t{num_raw_files}\n')
     
     logger.info(f"Results saved to {output_file}")
     
