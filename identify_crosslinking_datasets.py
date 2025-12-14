@@ -454,7 +454,7 @@ def process_projects_streaming(filepath: str, raw_file_counts: Dict[str, int], u
                 if is_crosslinking_dataset_keywords(project, keywords):
                     keyword_matches += 1
                     # Verify with LLM
-                    if is_crosslinking_dataset_llm(project):
+                    if is_crosslinking_dataset_llm(project, model_name=llm_model, temperature=llm_temperature, keywords=keywords):
                         llm_verified += 1
                         accession = project.get('accession', '')
                         submission_date = project.get('submissionDate', '')
