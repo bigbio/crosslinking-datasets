@@ -111,7 +111,12 @@ def load_json_file_robust(filepath: str):
     try:
         logger.info("Parsing JSON...")
         result = json.loads(content_str)
-        logger.info(f"Successfully loaded JSON (found {len(result) if isinstance(result, list) else 'object'} items)")
+        if isinstance(result, list):
+            logger.info(f"Successfully loaded JSON (found list with {len(result)} items)")
+        elif isinstance(result, dict):
+            logger.info(f"Successfully loaded JSON (found dict with {len(result)} keys)")
+        else:
+            logger.info(f"Successfully loaded JSON (found {type(result).__name__})")
         return result
     except json.JSONDecodeError as e:
         logger.error(f"JSON decode error: {e}")
