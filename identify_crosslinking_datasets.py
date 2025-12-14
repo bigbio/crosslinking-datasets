@@ -88,7 +88,12 @@ def load_json_file_robust(filepath: str):
             content_clean = re.sub(rb'[\x00-\x08\x0b-\x0c\x0e-\x1f\x7f-\x9f]', b'', content)
             logger.info("Parsing JSON with orjson...")
             result = orjson.loads(content_clean)
-            logger.info(f"Successfully loaded JSON with orjson (found {len(result) if isinstance(result, list) else 'object'} items)")
+            if isinstance(result, list):
+                logger.info(f"Successfully loaded JSON with orjson (found list with {len(result)} items)")
+            elif isinstance(result, dict):
+                logger.info(f"Successfully loaded JSON with orjson (found dict with {len(result)} keys)")
+            else:
+                logger.info(f"Successfully loaded JSON with orjson (found {type(result).__name__})")
             return result
     except Exception as e:
         logger.info(f"orjson loading failed: {e}, falling back to standard json")
