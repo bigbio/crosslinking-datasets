@@ -310,6 +310,60 @@ def count_raw_files(files_metadata: List[dict]) -> Dict[str, int]:
     logger.info(f"Found {raw_files_found:,} raw files across {len(raw_file_counts):,} projects")
     return dict(raw_file_counts)
 
+def process_single_project(project: dict, raw_file_counts: Dict[str, int], use_llm: bool, keywords: List[str], llm_model: str, llm_temperature: float, stats: dict) -> dict:
+    """Process a single project and return project data if it's a crosslinking dataset.
+    
+    Args:
+        project: Project dictionary to process
+        raw_file_counts: Dictionary mapping accession to raw file counts
+        use_llm: Whether to use LLM for classification
+        keywords: List of keywords for keyword-based filtering
+        llm_model: LLM model name
+        llm_temperature: LLM temperature
+        stats: Dictionary to update with statistics (keyword_matches, llm_verified)
+    
+    Returns:
+        Project dictionary if it's a crosslinking dataset, None otherwise
+    """
+    if use_llm:
+        # First do fast keyword check
+        if is_crosslinking_dataset_keywords(project, keywords):
+            stats['keyword_matches'] += 1
+            # Verify with LLM
+            if is_crosslinking_dataset_llm(project, model_name=llm_model, temperature=llm_temperature, keywords=keywords):
+                stats['llm_verified'] += 1
+                accession = project.get('accession', '')
+                submission_date = project.get('submissionDate', '')
+                title = project.get('title', '')
+                num_raw_files = raw_file_counts.get(accession, 0)
+                
+                logger.debug(f"LLM verified crosslinking dataset: {accession} - {title[:50]}... ({num_raw_files} raw files)")
+                
+                return {
+                    'accession': accession,
+                    'submissionDate': submission_date,
+                    'title': title,
+                    'numRawFiles': num_raw_files
+                }
+    else:
+        # Just use keywords
+        if is_crosslinking_dataset_keywords(project, keywords):
+            accession = project.get('accession', '')
+            submission_date = project.get('submissionDate', '')
+            title = project.get('title', '')
+            num_raw_files = raw_file_counts.get(accession, 0)
+            
+            logger.debug(f"Found crosslinking dataset: {accession} - {title[:50]}... ({num_raw_files} raw files)")
+            
+            return {
+                'accession': accession,
+                'submissionDate': submission_date,
+                'title': title,
+                'numRawFiles': num_raw_files
+            }
+    
+    return None
+
 def process_projects_streaming(filepath: str, raw_file_counts: Dict[str, int], use_llm: bool = True, keywords: List[str] = None, llm_model: str = 'llama3.2', llm_temperature: float = 0.0) -> List[dict]:
     """Process projects using streaming JSON parsing to reduce memory usage."""
     logger.info("Processing projects in streaming mode...")
@@ -319,8 +373,7 @@ def process_projects_streaming(filepath: str, raw_file_counts: Dict[str, int], u
         logger.info("Using keyword-based classification")
     
     crosslinking_projects = []
-    keyword_matches = 0
-    llm_verified = 0
+    stats = {'keyword_matches': 0, 'llm_verified': 0}
     
     try:
         import ijson
@@ -333,46 +386,12 @@ def process_projects_streaming(filepath: str, raw_file_counts: Dict[str, int], u
                     if (idx + 1) % 10000 == 0:
                         logger.info(f"  Processed {idx + 1:,} projects (found {len(crosslinking_projects)} crosslinking datasets so far)...")
                     
-                    # Hybrid approach: first check keywords (fast), then verify with LLM if keywords match
-                    if use_llm:
-                        # First do fast keyword check
-                        if is_crosslinking_dataset_keywords(project, keywords):
-                            keyword_matches += 1
-                            # Verify with LLM
-                            if is_crosslinking_dataset_llm(project):
-                                llm_verified += 1
-                                accession = project.get('accession', '')
-                                submission_date = project.get('submissionDate', '')
-                                title = project.get('title', '')
-                                num_raw_files = raw_file_counts.get(accession, 0)
-                                
-                                logger.debug(f"LLM verified crosslinking dataset: {accession} - {title[:50]}... ({num_raw_files} raw files)")
-                                
-                                crosslinking_projects.append({
-                                    'accession': accession,
-                                    'submissionDate': submission_date,
-                                    'title': title,
-                                    'numRawFiles': num_raw_files
-                                })
-                    else:
-                        # Just use keywords
-                        if is_crosslinking_dataset_keywords(project, keywords):
-                            accession = project.get('accession', '')
-                            submission_date = project.get('submissionDate', '')
-                            title = project.get('title', '')
-                            num_raw_files = raw_file_counts.get(accession, 0)
-                            
-                            logger.debug(f"Found crosslinking dataset: {accession} - {title[:50]}... ({num_raw_files} raw files)")
-                            
-                            crosslinking_projects.append({
-                                'accession': accession,
-                                'submissionDate': submission_date,
-                                'title': title,
-                                'numRawFiles': num_raw_files
-                            })
+                    result = process_single_project(project, raw_file_counts, use_llm, keywords, llm_model, llm_temperature, stats)
+                    if result:
+                        crosslinking_projects.append(result)
             
             if use_llm:
-                logger.info(f"Keyword matches: {keyword_matches}, LLM verified: {llm_verified}")
+                logger.info(f"Keyword matches: {stats['keyword_matches']}, LLM verified: {stats['llm_verified']}")
             return crosslinking_projects
         except (ijson.common.JSONError, ijson.common.IncompleteJSONError) as e:
             logger.warning(f"Streaming JSON parsing failed: {e}")
@@ -380,106 +399,38 @@ def process_projects_streaming(filepath: str, raw_file_counts: Dict[str, int], u
             projects = load_json_file_robust(filepath)
             logger.info(f"Loaded {len(projects):,} projects")
             
+            stats = {'keyword_matches': 0, 'llm_verified': 0}
             crosslinking_projects = []
-            keyword_matches = 0
-            llm_verified = 0
             
             for idx, project in enumerate(projects):
                 if (idx + 1) % 10000 == 0:
                     logger.info(f"  Processed {idx + 1:,} / {len(projects):,} projects (found {len(crosslinking_projects)} crosslinking datasets so far)...")
                 
-                if use_llm:
-                    # First do fast keyword check
-                    if is_crosslinking_dataset_keywords(project, keywords):
-                        keyword_matches += 1
-                        # Verify with LLM
-                        if is_crosslinking_dataset_llm(project, model_name=llm_model, temperature=llm_temperature, keywords=keywords):
-                            llm_verified += 1
-                            accession = project.get('accession', '')
-                            submission_date = project.get('submissionDate', '')
-                            title = project.get('title', '')
-                            num_raw_files = raw_file_counts.get(accession, 0)
-                            
-                            logger.debug(f"LLM verified crosslinking dataset: {accession} - {title[:50]}... ({num_raw_files} raw files)")
-                            
-                            crosslinking_projects.append({
-                                'accession': accession,
-                                'submissionDate': submission_date,
-                                'title': title,
-                                'numRawFiles': num_raw_files
-                            })
-                else:
-                    # Just use keywords
-                    if is_crosslinking_dataset_keywords(project, keywords):
-                        accession = project.get('accession', '')
-                        submission_date = project.get('submissionDate', '')
-                        title = project.get('title', '')
-                        num_raw_files = raw_file_counts.get(accession, 0)
-                        
-                        logger.debug(f"Found crosslinking dataset: {accession} - {title[:50]}... ({num_raw_files} raw files)")
-                        
-                        crosslinking_projects.append({
-                            'accession': accession,
-                            'submissionDate': submission_date,
-                            'title': title,
-                            'numRawFiles': num_raw_files
-                        })
+                result = process_single_project(project, raw_file_counts, use_llm, keywords, llm_model, llm_temperature, stats)
+                if result:
+                    crosslinking_projects.append(result)
             
             if use_llm:
-                logger.info(f"Keyword matches: {keyword_matches}, LLM verified: {llm_verified}")
+                logger.info(f"Keyword matches: {stats['keyword_matches']}, LLM verified: {stats['llm_verified']}")
             return crosslinking_projects
     except ImportError:
         logger.warning("ijson not available, falling back to loading entire file (may use more memory)")
         projects = load_json_file_robust(filepath)
         logger.info(f"Loaded {len(projects):,} projects")
         
+        stats = {'keyword_matches': 0, 'llm_verified': 0}
         crosslinking_projects = []
-        keyword_matches = 0
-        llm_verified = 0
         
         for idx, project in enumerate(projects):
             if (idx + 1) % 10000 == 0:
                 logger.info(f"  Processed {idx + 1:,} / {len(projects):,} projects (found {len(crosslinking_projects)} crosslinking datasets so far)...")
             
-            if use_llm:
-                # First do fast keyword check
-                if is_crosslinking_dataset_keywords(project, keywords):
-                    keyword_matches += 1
-                    # Verify with LLM
-                    if is_crosslinking_dataset_llm(project):
-                        llm_verified += 1
-                        accession = project.get('accession', '')
-                        submission_date = project.get('submissionDate', '')
-                        title = project.get('title', '')
-                        num_raw_files = raw_file_counts.get(accession, 0)
-                        
-                        logger.debug(f"LLM verified crosslinking dataset: {accession} - {title[:50]}... ({num_raw_files} raw files)")
-                        
-                        crosslinking_projects.append({
-                            'accession': accession,
-                            'submissionDate': submission_date,
-                            'title': title,
-                            'numRawFiles': num_raw_files
-                        })
-            else:
-                # Just use keywords
-                if is_crosslinking_dataset_keywords(project, keywords):
-                    accession = project.get('accession', '')
-                    submission_date = project.get('submissionDate', '')
-                    title = project.get('title', '')
-                    num_raw_files = raw_file_counts.get(accession, 0)
-                    
-                    logger.debug(f"Found crosslinking dataset: {accession} - {title[:50]}... ({num_raw_files} raw files)")
-                    
-                    crosslinking_projects.append({
-                        'accession': accession,
-                        'submissionDate': submission_date,
-                        'title': title,
-                        'numRawFiles': num_raw_files
-                    })
+            result = process_single_project(project, raw_file_counts, use_llm, keywords, llm_model, llm_temperature, stats)
+            if result:
+                crosslinking_projects.append(result)
         
         if use_llm:
-            logger.info(f"Keyword matches: {keyword_matches}, LLM verified: {llm_verified}")
+            logger.info(f"Keyword matches: {stats['keyword_matches']}, LLM verified: {stats['llm_verified']}")
         return crosslinking_projects
 
 def main():
