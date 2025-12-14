@@ -1,0 +1,78 @@
+name: Validate SDRF Files
+
+on:
+  pull_request:
+    paths:
+      - '**.sdrf.tsv'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      
+      - name: Install sdrf-pipelines
+        run: |
+          pip install sdrf-pipelines
+      
+      - name: Get changed SDRF files
+        id: changed-files
+        run: |
+          # Get list of changed .sdrf.tsv files
+          git fetch origin ${{ github.base_ref }}
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep '\.sdrf\.tsv$' || true)
+          
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "No SDRF files changed"
+            echo "files=" >> $GITHUB_OUTPUT
+          else
+            echo "Changed SDRF files:"
+            echo "$CHANGED_FILES"
+            # Convert to JSON array for matrix
+            FILES_JSON=$(echo "$CHANGED_FILES" | jq -R -s -c 'split("\n")[:-1]')
+            echo "files=$FILES_JSON" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Validate SDRF files
+        if: steps.changed-files.outputs.files != ''
+        run: |
+          # Parse JSON array
+          FILES='${{ steps.changed-files.outputs.files }}'
+          
+          VALIDATION_FAILED=0
+          
+          # Process each file
+          while IFS= read -r file; do
+            if [ -f "$file" ]; then
+              echo "::group::Validating $file"
+              
+              # Run validation
+              if parse_sdrf validate-sdrf --sdrf_file "$file"; then
+                echo "✓ $file passed validation"
+              else
+                EXIT_CODE=$?
+                echo "::error file=$file::SDRF validation failed with exit code $EXIT_CODE"
+                VALIDATION_FAILED=1
+              fi
+              
+              echo "::endgroup::"
+            else
+              echo "::warning file=$file::File not found (may have been deleted)"
+            fi
+          done < <(echo "$FILES" | jq -r '.[]')
+          
+          if [ $VALIDATION_FAILED -eq 1 ]; then
+            echo "::error::One or more SDRF files failed validation"
+            exit 1
+          fi
+          
+          echo "All SDRF files passed validation ✓"
