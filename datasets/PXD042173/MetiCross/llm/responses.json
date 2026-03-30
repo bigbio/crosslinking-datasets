@@ -1,0 +1,323 @@
+{
+  "metadata": {
+    "pxd": "PXD042173",
+    "category": "llm",
+    "saved_at": "2026-03-25T17:03:16.111496",
+    "filename": "responses"
+  },
+  "data": {
+    "comment_label": {
+      "response": "{\n  \"value\": \"isotopically labeled crosslinker variants\",\n  \"evidence_quote\": \"We generated a large-scale XL-MS dataset from intact HEK293T cells (CRL-3216, ATCC) using Azide-A-DSBSO (Sigma-Aldrich) as a cross-linker.\",\n  \"evidence_location\": \"Generation of HEK dataset\",\n  \"confidence\": \"high\"\n}",
+      "queried_at": "2026-03-25T17:00:32.982545",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": "isotopically labeled crosslinker variants",
+        "evidence_quote": "We generated a large-scale XL-MS dataset from intact HEK293T cells (CRL-3216, ATCC) using Azide-A-DSBSO (Sigma-Aldrich) as a cross-linker.",
+        "evidence_location": "Generation of HEK dataset",
+        "confidence": "high"
+      }
+    },
+    "comment_dissociation_method": {
+      "response": "{\n  \"value\": [\"HCD\", \"stepped HCD\"],\n  \"evidence_quote\": \"Peptides were fragmented using higher-energy collisional dissociation (HCD) with stepped collision energies (SCEs) of 27\\u00b16%.\",\n  \"evidence_location\": \"LC\\u2013MS/MS analysis section\",\n  \"confidence\": \"high\"\n}",
+      "queried_at": "2026-03-25T17:00:38.672335",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": [
+          "HCD",
+          "stepped HCD"
+        ],
+        "evidence_quote": "Peptides were fragmented using higher-energy collisional dissociation (HCD) with stepped collision energies (SCEs) of 27±6%.",
+        "evidence_location": "LC–MS/MS analysis section",
+        "confidence": "high"
+      }
+    },
+    "comment_crosslink_enrichment_method": {
+      "response": "{\n  \"value\": [\n    \"Size exclusion chromatography\",\n    \"Affinity enrichment using DBCO agarose beads\"\n  ],\n  \"evidence_quote\": \"The isolation of Azide-A-DSBSO cross-linked peptides was performed using DBCO agarose beads (Click-chemistry tools) overnight at room temperature. Cross-linked peptides were separated from monolinks using size exclusion chromatography on a Superdex 30 Increase column with 3.2 × 300 mm bead dimensions (Cytiva).\",\n  \"evidence_location\": \"Generation of HEK dataset\",\n  \"confidence\": \"high\"\n}",
+      "queried_at": "2026-03-25T17:00:49.485876",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": [
+          "Size exclusion chromatography",
+          "Affinity enrichment using DBCO agarose beads"
+        ],
+        "evidence_quote": "The isolation of Azide-A-DSBSO cross-linked peptides was performed using DBCO agarose beads (Click-chemistry tools) overnight at room temperature. Cross-linked peptides were separated from monolinks using size exclusion chromatography on a Superdex 30 Increase column with 3.2 × 300 mm bead dimensions (Cytiva).",
+        "evidence_location": "Generation of HEK dataset",
+        "confidence": "high"
+      }
+    },
+    "characteristics_organism_part": {
+      "response": "{\n  \"value\": \"HEK293T cells\",\n  \"evidence_quote\": \"We generated a large-scale XL-MS dataset from intact HEK293T cells (CRL-3216, ATCC) using Azide-A-DSBSO (Sigma-Aldrich) as a cross-linker.\",\n  \"evidence_location\": \"Generation of HEK dataset\",\n  \"confidence\": \"high\"\n}",
+      "queried_at": "2026-03-25T17:00:55.034253",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": "HEK293T cells",
+        "evidence_quote": "We generated a large-scale XL-MS dataset from intact HEK293T cells (CRL-3216, ATCC) using Azide-A-DSBSO (Sigma-Aldrich) as a cross-linker.",
+        "evidence_location": "Generation of HEK dataset",
+        "confidence": "high"
+      }
+    },
+    "characteristics_organism": {
+      "response": "{\n  \"value\": [\"Homo sapiens\"],\n  \"evidence_quote\": \"Ectopically expressed and purified human proteins were provided by Absea Biotechnology Ltd\",\n  \"evidence_location\": \"Methods section\",\n  \"confidence\": \"high\"\n}",
+      "queried_at": "2026-03-25T17:00:59.306709",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": [
+          "Homo sapiens"
+        ],
+        "evidence_quote": "Ectopically expressed and purified human proteins were provided by Absea Biotechnology Ltd",
+        "evidence_location": "Methods section",
+        "confidence": "high"
+      }
+    },
+    "comment_quenching_reagent": {
+      "response": "```json\n{\n  \"value\": \"20 mM Tris-HCl pH 8.0\",\n  \"class\": \"TRIS\",\n  \"concentration\": \"20 mM\",\n  \"evidence_quote\": \"The cross-linking reaction was quenched with 20 mM Tris-HCl pH 8.0 for 30 min at room temperature.\",\n  \"evidence_location\": \"Methods section under Protein mixing and cross-linking\",\n  \"confidence\": \"High\",\n  \"notes\": \"The quenching agent is clearly identified as Tris-HCl with a specified concentration and pH, which fits within the TRIS class for XiSearch.\"\n}\n```",
+      "queried_at": "2026-03-25T17:01:06.170157",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": "20 mM Tris-HCl pH 8.0",
+        "class": "TRIS",
+        "concentration": "20 mM",
+        "evidence_quote": "The cross-linking reaction was quenched with 20 mM Tris-HCl pH 8.0 for 30 min at room temperature.",
+        "evidence_location": "Methods section under Protein mixing and cross-linking",
+        "confidence": "High",
+        "notes": "The quenching agent is clearly identified as Tris-HCl with a specified concentration and pH, which fits within the TRIS class for XiSearch."
+      }
+    },
+    "comment_collision_energy": {
+      "response": "{\n  \"value\": \"27 ± 6%\",\n  \"units\": \"%\",\n  \"evidence_quote\": \"Peptides were fragmented using higher-energy collisional dissociation (HCD) with stepped collision energies (SCEs) of 27 ± 6%.\",\n  \"evidence_location\": \"LC–MS/MS analysis section\",\n  \"confidence\": \"high\"\n}",
+      "queried_at": "2026-03-25T17:01:11.165213",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": "27 ± 6%",
+        "units": "%",
+        "evidence_quote": "Peptides were fragmented using higher-energy collisional dissociation (HCD) with stepped collision energies (SCEs) of 27 ± 6%.",
+        "evidence_location": "LC–MS/MS analysis section",
+        "confidence": "high"
+      }
+    },
+    "comment_cleavage_agent_details": {
+      "response": "{\n  \"value\": [\n    \"Lys-C for 4 hours at 37°C\",\n    \"trypsin overnight at 37°C\"\n  ],\n  \"evidence_quote\": \"The protein mixture was digested with 1:200 (wt:wt) Lys-C for 4 h at 37 °C, with shaking. After dilution with three volumes 20 mM HEPES pH 7.8, 1:100 (wt:wt) trypsin was added and incubated overnight at 37 °C.\",\n  \"evidence_location\": \"METHODS section\",\n  \"confidence\": \"high\"\n}",
+      "queried_at": "2026-03-25T17:01:17.811410",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": [
+          "Lys-C for 4 hours at 37°C",
+          "trypsin overnight at 37°C"
+        ],
+        "evidence_quote": "The protein mixture was digested with 1:200 (wt:wt) Lys-C for 4 h at 37 °C, with shaking. After dilution with three volumes 20 mM HEPES pH 7.8, 1:100 (wt:wt) trypsin was added and incubated overnight at 37 °C.",
+        "evidence_location": "METHODS section",
+        "confidence": "high"
+      }
+    },
+    "comment_instrument": {
+      "response": "{\n  \"value\": [\"Orbitrap Fusion Lumos\"],\n  \"evidence_quote\": \"Peptides were separated using a 180-min gradient and analyzed on an Orbitrap Fusion Lumos mass spectrometer with FAIMS Pro device (Thermo Scientific) and Instrument Control Software v.3.4.\",\n  \"evidence_location\": \"LC–MS/MS analysis section\",\n  \"confidence\": \"high\"\n}",
+      "queried_at": "2026-03-25T17:01:24.556238",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": [
+          "Orbitrap Fusion Lumos"
+        ],
+        "evidence_quote": "Peptides were separated using a 180-min gradient and analyzed on an Orbitrap Fusion Lumos mass spectrometer with FAIMS Pro device (Thermo Scientific) and Instrument Control Software v.3.4.",
+        "evidence_location": "LC–MS/MS analysis section",
+        "confidence": "high"
+      }
+    },
+    "comment_modification_parameters": {
+      "response": "{\n  \"fixed_mods\": [\n    {\n      \"name\": \"Carbamidomethylation\",\n      \"mass\": \"+57.021 Da\",\n      \"residue\": \"Cysteine\"\n    }\n  ],\n  \"variable_mods\": [\n    {\n      \"name\": \"Oxidation\",\n      \"mass\": \"+15.995 Da\",\n      \"residue\": \"Methionine\"\n    },\n    {\n      \"name\": \"Deamidation\",\n      \"mass\": \"+0.983467 Da\",\n      \"residue\": \"Asparagine\"\n    },\n    {\n      \"name\": \"Methylation\",\n      \"mass\": \"+14.01565 Da\",\n      \"residue\": \"Aspartic and Glutamic acids\"\n    }\n  ],\n  \"evidence_quote\": \"Carbamidomethylation (+57.021 Da) on cysteines was used as a static modification. Oxidation of methionine (+15.995 Da) was set as a variable modification. Oxidation of methionine (+15.995 Da), deamidation of asparagine (+0.983467), methylation of aspartic and glutamic acids (+14.01565) were set as variable modifications.\",\n  \"evidence_location\": \"Methods section\",\n  \"confidence\": \"High\",\n  \"notes\": \"The modifications are clearly listed with their respective masses and target residues, providing a high level of detail and confidence in the annotation.\"\n}",
+      "queried_at": "2026-03-25T17:01:40.875429",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "fixed_mods": [
+          {
+            "name": "Carbamidomethylation",
+            "mass": "+57.021 Da",
+            "residue": "Cysteine"
+          }
+        ],
+        "variable_mods": [
+          {
+            "name": "Oxidation",
+            "mass": "+15.995 Da",
+            "residue": "Methionine"
+          },
+          {
+            "name": "Deamidation",
+            "mass": "+0.983467 Da",
+            "residue": "Asparagine"
+          },
+          {
+            "name": "Methylation",
+            "mass": "+14.01565 Da",
+            "residue": "Aspartic and Glutamic acids"
+          }
+        ],
+        "evidence_quote": "Carbamidomethylation (+57.021 Da) on cysteines was used as a static modification. Oxidation of methionine (+15.995 Da) was set as a variable modification. Oxidation of methionine (+15.995 Da), deamidation of asparagine (+0.983467), methylation of aspartic and glutamic acids (+14.01565) were set as variable modifications.",
+        "evidence_location": "Methods section",
+        "confidence": "High",
+        "notes": "The modifications are clearly listed with their respective masses and target residues, providing a high level of detail and confidence in the annotation."
+      }
+    },
+    "characteristics_enrichment_process": {
+      "response": "```json\n{\n  \"value\": [\n    \"Strong cation exchange chromatography\",\n    \"Size exclusion chromatography\"\n  ],\n  \"evidence_quote\": \"Peptides from the benchmarking dataset were loaded in steps of 500 µg onto a PolySULFOETHYL A column (PolyLC) on an Agilent 1260 Infinity II system and separated with a 90-min gradient. All fractions were desalted using C8 stagetips. Cross-linked peptides were separated from monolinks using size exclusion chromatography on a Superdex 30 Increase column with 3.2 × 300 mm bead dimensions (Cytiva) and the isolated cross-links were subjected to a high-pH HPLC run using a Gemini column (3 µm C19, 110 Å, 100 × 1 mm (Phenomenex) on an Agilent offline fractionation system.\",\n  \"evidence_location\": \"METHODS section\",\n  \"confidence\": \"High\"\n}\n```",
+      "queried_at": "2026-03-25T17:01:53.244522",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": [
+          "Strong cation exchange chromatography",
+          "Size exclusion chromatography"
+        ],
+        "evidence_quote": "Peptides from the benchmarking dataset were loaded in steps of 500 µg onto a PolySULFOETHYL A column (PolyLC) on an Agilent 1260 Infinity II system and separated with a 90-min gradient. All fractions were desalted using C8 stagetips. Cross-linked peptides were separated from monolinks using size exclusion chromatography on a Superdex 30 Increase column with 3.2 × 300 mm bead dimensions (Cytiva) and the isolated cross-links were subjected to a high-pH HPLC run using a Gemini column (3 µm C19, 110 Å, 100 × 1 mm (Phenomenex) on an Agilent offline fractionation system.",
+        "evidence_location": "METHODS section",
+        "confidence": "High"
+      }
+    },
+    "comment_technical_replicate": {
+      "response": "{\n  \"value\": null,\n  \"evidence_quote\": \"The analytical standard was split into four batches, each containing eight randomly allocated interaction groups. Batch 1 was set aside to guide the development of Scout. Batch 2 was used for internal testing to optimize our LC–MS method. Batches 3 and 4 were combined and used for benchmarking Scout and published XL-MS search engines.\",\n  \"evidence_location\": \"Methods section under 'Developing an ANN-based cross-link search engine' and 'Benchmarking Scout on independent XL-MS standards'\",\n  \"confidence\": \"high\",\n  \"notes\": \"The document does not explicitly mention 'technical replicates' or describe repeat injections or replicate LC-MS runs in a manner that allows for clear technical replicate numbering.\"\n}",
+      "queried_at": "2026-03-25T17:02:02.629126",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": null,
+        "evidence_quote": "The analytical standard was split into four batches, each containing eight randomly allocated interaction groups. Batch 1 was set aside to guide the development of Scout. Batch 2 was used for internal testing to optimize our LC–MS method. Batches 3 and 4 were combined and used for benchmarking Scout and published XL-MS search engines.",
+        "evidence_location": "Methods section under 'Developing an ANN-based cross-link search engine' and 'Benchmarking Scout on independent XL-MS standards'",
+        "confidence": "high",
+        "notes": "The document does not explicitly mention 'technical replicates' or describe repeat injections or replicate LC-MS runs in a manner that allows for clear technical replicate numbering."
+      }
+    },
+    "characteristics_crosslinking_reaction_time": {
+      "response": "{\n  \"value\": \"30\",\n  \"units\": \"minutes\",\n  \"evidence_quote\": \"Then, 0.2–1 mM DSSO cross-linking reagent was added to the groups and incubated at room temperature for 30 min.\",\n  \"evidence_location\": \"METHODS section, under the subheading 'Protein mixing and cross-linking'\",\n  \"confidence\": \"high\"\n}",
+      "queried_at": "2026-03-25T17:02:08.579152",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": "30",
+        "units": "minutes",
+        "evidence_quote": "Then, 0.2–1 mM DSSO cross-linking reagent was added to the groups and incubated at room temperature for 30 min.",
+        "evidence_location": "METHODS section, under the subheading 'Protein mixing and cross-linking'",
+        "confidence": "high"
+      }
+    },
+    "comment_data_file": {
+      "response": "{\n  \"value\": null,\n  \"evidence_quote\": \"The data shown in this manuscript have been generated with Scout v.1.4.14.\",\n  \"evidence_location\": \"Scout section\",\n  \"confidence\": \"high\",\n  \"notes\": \"The manuscript does not provide explicit RAW, mzML, or mgf file names, only mentions that data was generated using Scout software.\"\n}",
+      "queried_at": "2026-03-25T17:02:13.557963",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": null,
+        "evidence_quote": "The data shown in this manuscript have been generated with Scout v.1.4.14.",
+        "evidence_location": "Scout section",
+        "confidence": "high",
+        "notes": "The manuscript does not provide explicit RAW, mzML, or mgf file names, only mentions that data was generated using Scout software."
+      }
+    },
+    "comment_fraction_identifier": {
+      "response": "{\n  \"value\": \"SCX fractions 1-10\",\n  \"evidence_quote\": \"Peptides from the benchmarking dataset were loaded in steps of 500\\u00b5g onto a PolySULFOETHYL A column (PolyLC) on an Agilent 1260 Infinity II system and separated with a 90-min gradient. All fractions were desalted using C8 stagetips.\",\n  \"evidence_location\": \"Strong cation exchange chromatography section\",\n  \"confidence\": \"high\"\n}",
+      "queried_at": "2026-03-25T17:02:22.831804",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": "SCX fractions 1-10",
+        "evidence_quote": "Peptides from the benchmarking dataset were loaded in steps of 500µg onto a PolySULFOETHYL A column (PolyLC) on an Agilent 1260 Infinity II system and separated with a 90-min gradient. All fractions were desalted using C8 stagetips.",
+        "evidence_location": "Strong cation exchange chromatography section",
+        "confidence": "high"
+      }
+    },
+    "comment_crosslinker_to_protein_ratio": {
+      "response": "{\n  \"value\": null,\n  \"evidence_quote\": \"0.2–1 mM DSSO cross-linking reagent was added to the groups and incubated at room temperature for 30 min.\",\n  \"evidence_location\": \"METHODS section, under Protein mixing and cross-linking\",\n  \"confidence\": \"low\",\n  \"notes\": \"Protein concentration and crosslinker concentration are given, but no explicit ratio is provided.\"\n}",
+      "queried_at": "2026-03-25T17:02:28.065433",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": null,
+        "evidence_quote": "0.2–1 mM DSSO cross-linking reagent was added to the groups and incubated at room temperature for 30 min.",
+        "evidence_location": "METHODS section, under Protein mixing and cross-linking",
+        "confidence": "low",
+        "notes": "Protein concentration and crosslinker concentration are given, but no explicit ratio is provided."
+      }
+    },
+    "characteristics_cell_type": {
+      "response": "{\n  \"value\": \"HEK293T\",\n  \"evidence_quote\": \"We generated a large-scale XL-MS dataset from intact HEK293T cells (CRL-3216, ATCC) using Azide-A-DSBSO (Sigma-Aldrich) as a cross-linker.\",\n  \"evidence_location\": \"Generation of HEK dataset\",\n  \"confidence\": \"high\"\n}",
+      "queried_at": "2026-03-25T17:02:32.856215",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": "HEK293T",
+        "evidence_quote": "We generated a large-scale XL-MS dataset from intact HEK293T cells (CRL-3216, ATCC) using Azide-A-DSBSO (Sigma-Aldrich) as a cross-linker.",
+        "evidence_location": "Generation of HEK dataset",
+        "confidence": "high"
+      }
+    },
+    "characteristics_crosslinking_temperature": {
+      "response": "{\n  \"value\": \"room temperature\",\n  \"units\": \"Celsius\",\n  \"evidence_quote\": \"Then, 0.2–1 mM DSSO cross-linking reagent was added to the groups and incubated at room temperature for 30 min.\",\n  \"evidence_location\": \"METHODS section, under Protein mixing and cross-linking\",\n  \"confidence\": \"high\"\n}",
+      "queried_at": "2026-03-25T17:02:38.636897",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": "room temperature",
+        "units": "Celsius",
+        "evidence_quote": "Then, 0.2–1 mM DSSO cross-linking reagent was added to the groups and incubated at room temperature for 30 min.",
+        "evidence_location": "METHODS section, under Protein mixing and cross-linking",
+        "confidence": "high"
+      }
+    },
+    "comment_cross_linker": {
+      "response": "```json\n{\n  \"NT\": \"Disuccinimidyl sulfoxide\",\n  \"AC\": null,\n  \"CL\": \"yes\",\n  \"TA\": \"K\",\n  \"MH\": null,\n  \"ML\": null,\n  \"SM\": null,\n  \"serialized\": \"NT=Disuccinimidyl sulfoxide;AC=null;CL=yes;TA=K;MH=null;ML=null;SM=null\",\n  \"evidence_quote\": \"Then, 0.2–1 mM DSSO cross-linking reagent was added to the groups and incubated at room temperature for 30 min.\",\n  \"evidence_location\": \"Methods section\",\n  \"confidence\": \"High\",\n  \"notes\": \"DSSO is explicitly mentioned as the cross-linker used in the experiments, and it is described as MS-cleavable. The target residue is lysine (K). No specific accession codes, heavy/light stub masses, or spacer length/mass details are provided.\"\n}\n```",
+      "queried_at": "2026-03-25T17:02:48.333852",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "NT": "Disuccinimidyl sulfoxide",
+        "AC": null,
+        "CL": "yes",
+        "TA": "K",
+        "MH": null,
+        "ML": null,
+        "SM": null,
+        "serialized": "NT=Disuccinimidyl sulfoxide;AC=null;CL=yes;TA=K;MH=null;ML=null;SM=null",
+        "evidence_quote": "Then, 0.2–1 mM DSSO cross-linking reagent was added to the groups and incubated at room temperature for 30 min.",
+        "evidence_location": "Methods section",
+        "confidence": "High",
+        "notes": "DSSO is explicitly mentioned as the cross-linker used in the experiments, and it is described as MS-cleavable. The target residue is lysine (K). No specific accession codes, heavy/light stub masses, or spacer length/mass details are provided."
+      }
+    },
+    "characteristics_crosslink_type": {
+      "response": "{\n  \"value\": \"inter-protein, intra-protein\",\n  \"evidence_quote\": \"we know for each detected cross-link whether it is allowed (interlinks and intralinks within one interaction group) or not allowed (between-group interlinks, or intralinks of proteins not present in the respective group) according to our mixing scheme\",\n  \"evidence_location\": \"Benchmarking Scout on independent XL-MS standards section\",\n  \"confidence\": \"high\"\n}",
+      "queried_at": "2026-03-25T17:02:54.863587",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": "inter-protein, intra-protein",
+        "evidence_quote": "we know for each detected cross-link whether it is allowed (interlinks and intralinks within one interaction group) or not allowed (between-group interlinks, or intralinks of proteins not present in the respective group) according to our mixing scheme",
+        "evidence_location": "Benchmarking Scout on independent XL-MS standards section",
+        "confidence": "high"
+      }
+    },
+    "comment_crosslinker_concentration": {
+      "response": "{\n  \"value\": \"2\",\n  \"units\": \"mM\",\n  \"evidence_quote\": \"HEK293T cells were grown to 90% confluence on ten 15-cm cell culture dishes (approximately 8 × 107 cells) and collected using ice-cold PBS. Then, 20 mg of cells were washed twice with ice-cold PBS before protein concentration estimation using ROTIQuant. Cells were adjusted to a concentration of 10 mg ml−1 in PBS and cross-linked in vivo at room temperature using 2 mM Azide-A-DSBSO for 30 min.\",\n  \"evidence_location\": \"METHODS section\",\n  \"confidence\": \"high\"\n}",
+      "queried_at": "2026-03-25T17:03:04.443608",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": "2",
+        "units": "mM",
+        "evidence_quote": "HEK293T cells were grown to 90% confluence on ten 15-cm cell culture dishes (approximately 8 × 107 cells) and collected using ice-cold PBS. Then, 20 mg of cells were washed twice with ice-cold PBS before protein concentration estimation using ROTIQuant. Cells were adjusted to a concentration of 10 mg ml−1 in PBS and cross-linked in vivo at room temperature using 2 mM Azide-A-DSBSO for 30 min.",
+        "evidence_location": "METHODS section",
+        "confidence": "high"
+      }
+    },
+    "characteristics_crosslink_distance": {
+      "response": "```json\n{\n  \"value\": null,\n  \"units\": null,\n  \"evidence_quote\": \"Then, 0.2–1 mM DSSO cross-linking reagent was added to the groups and incubated at room temperature for 30 min. HEK293T cells were cross-linked in vivo at room temperature using 2 mM Azide-A-DSBSO for 30 min.\",\n  \"evidence_location\": \"Methods section\",\n  \"confidence\": \"low\"\n}\n```",
+      "queried_at": "2026-03-25T17:03:10.973128",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": null,
+        "units": null,
+        "evidence_quote": "Then, 0.2–1 mM DSSO cross-linking reagent was added to the groups and incubated at room temperature for 30 min. HEK293T cells were cross-linked in vivo at room temperature using 2 mM Azide-A-DSBSO for 30 min.",
+        "evidence_location": "Methods section",
+        "confidence": "low"
+      }
+    },
+    "characteristics_biological_replicate": {
+      "response": "{\n  \"value\": null,\n  \"evidence_quote\": \"The analytical standard was split into four batches, each containing eight randomly allocated interaction groups.\",\n  \"evidence_location\": \"Methods section under 'Results'\",\n  \"confidence\": \"low\",\n  \"notes\": \"The document mentions batches and interaction groups but does not explicitly label biological replicates, leading to ambiguity in determining specific biological replicate indexing.\"\n}",
+      "queried_at": "2026-03-25T17:03:16.111362",
+      "model": "gpt-4-turbo",
+      "parsed": {
+        "value": null,
+        "evidence_quote": "The analytical standard was split into four batches, each containing eight randomly allocated interaction groups.",
+        "evidence_location": "Methods section under 'Results'",
+        "confidence": "low",
+        "notes": "The document mentions batches and interaction groups but does not explicitly label biological replicates, leading to ambiguity in determining specific biological replicate indexing."
+      }
+    }
+  }
+}
