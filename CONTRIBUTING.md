@@ -37,9 +37,10 @@ Thank you for your interest in contributing SDRF files for crosslinking datasets
    ```bash
    # Install sdrf-pipelines if needed
    pip install sdrf-pipelines
-   
-   # Validate
-   parse_sdrf validate-sdrf --sdrf_file datasets/PXD012345/PXD012345.sdrf.tsv
+
+   # Validate against ms-proteomics, crosslinking, and species templates
+   parse_sdrf validate-sdrf --sdrf_file datasets/PXD012345/PXD012345.sdrf.tsv \
+     -t ms-proteomics -t crosslinking -t human
    ```
 
 6. **Commit your changes**
@@ -71,29 +72,32 @@ At minimum, your SDRF file should include:
 - `characteristics[organism]`
 - `comment[data file]`
 - `comment[instrument]`
-- `comment[modification parameters]` (including crosslinker)
+- `comment[modification parameters]` (PTMs in `NT=;AC=;TA=;MT=` format)
 - `comment[cleavage agent details]`
+- `comment[cross-linker]` (cross-linker reagent using XLMOD ontology)
+- `comment[chemical cross-linking coupled with ms]` (XL-MS experiment type)
 
 ### Crosslinker Information
 Crosslinker information should be specified:
-1. As a modification parameter with proper ontology terms
-2. As a factor value if it's an experimental variable
+1. In `comment[cross-linker]` using XLMOD ontology terms (e.g., `NT=DSS;AC=XLMOD:02001`)
+2. As a modification parameter if it introduces a mass shift (e.g., `NT=DSS crosslink;AC=UNIMOD:1896;TA=K;MT=Variable`)
 
 ### Ontology Terms
-Use standard ontology terms when available:
+Use standard ontology terms in `NT=;AC=` format:
 - **PSI-MS** (Proteomics Standards Initiative Mass Spectrometry): `MS:` prefix
-  - Example: `MS:1001251; Trypsin`
+  - Example: `NT=Trypsin;AC=MS:1001251`
 - **UNIMOD**: `UNIMOD:` prefix for modifications
-  - Example: `UNIMOD:1896; DSS crosslink; TA:138.06808`
+  - Example: `NT=Oxidation;AC=UNIMOD:35;TA=M;MT=Variable`
+- **XLMOD**: `XLMOD:` prefix for cross-linkers
+  - Example: `NT=DSS;AC=XLMOD:02001`
 - **PRIDE**: `PRIDE:` prefix for proteomics-specific terms
 - **NCBITaxon**: `NCBITaxon:` prefix for organisms
-  - Example: `NCBITaxon:9606; Homo sapiens`
+  - Example: `NT=Homo sapiens;AC=NCBITaxon:9606`
 - **EFO**: `EFO:` prefix for experimental factors
-  - Example: `EFO:0000001; experimental factor`
 
-Format: `<ontology>:<id>; <term name>; [TA:<value>]`
+Format: `NT=<term name>;AC=<ontology>:<id>[;TA=<target>;MT=<modification type>]`
 
-Example: `MS:1001460; Oxidation; TA:15.99491`
+Example: `NT=Oxidation;AC=UNIMOD:35;TA=M;MT=Variable`
 
 ## Quality Guidelines
 
@@ -130,7 +134,8 @@ Before submitting, ensure your SDRF file:
 
 You can validate locally before pushing using:
 ```bash
-parse_sdrf validate-sdrf --sdrf_file datasets/PXD012345/PXD012345.sdrf.tsv
+parse_sdrf validate-sdrf --sdrf_file datasets/PXD012345/PXD012345.sdrf.tsv \
+  -t ms-proteomics -t crosslinking -t human
 ```
 
 ## Pull Request Guidelines

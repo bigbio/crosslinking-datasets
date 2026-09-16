@@ -45,34 +45,52 @@ jobs:
       - name: Validate SDRF files
         if: steps.changed-files.outputs.files != ''
         run: |
-          # Parse JSON array
           FILES='${{ steps.changed-files.outputs.files }}'
-          
           VALIDATION_FAILED=0
-          
-          # Process each file
+
           while IFS= read -r file; do
             if [ -f "$file" ]; then
               echo "::group::Validating $file"
-              
-              # Run validation
-              if parse_sdrf validate-sdrf --sdrf_file "$file"; then
-                echo "✓ $file passed validation"
+
+              # Auto-detect organism from SDRF to select species template
+              ORGANISM=$(python3 -c "
+          with open('$file') as f:
+              header = f.readline().strip().split('\t')
+              values = f.readline().strip().split('\t')
+              for i, h in enumerate(header):
+                  if h == 'characteristics[organism]':
+                      print(values[i].lower())
+                      break
+          ")
+
+              # Map organism to template
+              SPECIES_FLAG=""
+              case "$ORGANISM" in
+                "homo sapiens") SPECIES_FLAG="-t human" ;;
+                "mus musculus"|"rattus norvegicus"|"sus scrofa"|"bos taurus"|"gallus gallus"|"danio rerio"|"xenopus laevis")
+                  SPECIES_FLAG="-t vertebrates" ;;
+                "drosophila melanogaster"|"caenorhabditis elegans"|"saccharomyces cerevisiae"|"schizosaccharomyces pombe")
+                  SPECIES_FLAG="-t invertebrates" ;;
+                "arabidopsis thaliana"|"oryza sativa"|"zea mays"|"chlamydomonas reinhardtii")
+                  SPECIES_FLAG="-t plants" ;;
+              esac
+
+              echo "Detected organism: $ORGANISM -> species template: $SPECIES_FLAG"
+
+              if parse_sdrf validate-sdrf --sdrf_file "$file" -t ms-proteomics -t crosslinking $SPECIES_FLAG; then
+                echo "::notice file=$file::SDRF passed validation"
               else
-                EXIT_CODE=$?
-                echo "::error file=$file::SDRF validation failed with exit code $EXIT_CODE"
+                echo "::error file=$file::SDRF validation failed"
                 VALIDATION_FAILED=1
               fi
-              
+
               echo "::endgroup::"
-            else
-              echo "::warning file=$file::File not found (may have been deleted)"
             fi
           done < <(echo "$FILES" | jq -r '.[]')
-          
+
           if [ $VALIDATION_FAILED -eq 1 ]; then
             echo "::error::One or more SDRF files failed validation"
             exit 1
           fi
-          
-          echo "All SDRF files passed validation ✓"
+
+          echo "All SDRF files passed validation"
