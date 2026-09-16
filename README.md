@@ -33,17 +33,19 @@ SDRF (Sample and Data Relationship Format) is a tab-delimited format that descri
 
 Common SDRF columns for crosslinking experiments include:
 - `source name`: Biological source identifier
-- `characteristics[organism]`: Species/organism
+- `characteristics[organism]`: Species/organism (e.g., `Homo sapiens`)
 - `characteristics[cell type]`: Cell type (if applicable)
 - `characteristics[disease]`: Disease state (if applicable)
 - `comment[data file]`: Raw data file names
 - `comment[fraction identifier]`: Fraction information
 - `comment[technical replicate]`: Technical replicate number
 - `comment[biological replicate]`: Biological replicate number
-- `comment[label]`: Labeling information
-- `comment[instrument]`: Mass spectrometry instrument
-- `comment[modification parameters]`: PTMs and crosslinker information
-- `comment[cleavage agent details]`: Protease used
+- `comment[label]`: Labeling information (e.g., `NT=label free sample;AC=MS:1002038`)
+- `comment[instrument]`: Mass spectrometry instrument (e.g., `NT=Q Exactive HF;AC=MS:1002523`)
+- `comment[modification parameters]`: PTMs in `NT=;AC=;TA=;MT=` format (e.g., `NT=Oxidation;AC=UNIMOD:35;TA=M;MT=Variable`)
+- `comment[cleavage agent details]`: Protease used (e.g., `NT=Trypsin;AC=MS:1001251`)
+- `comment[cross-linker]`: Cross-linker reagent using XLMOD ontology (e.g., `NT=DSS;AC=XLMOD:02001`)
+- `comment[chemical cross-linking coupled with ms]`: Whether the experiment uses XL-MS (e.g., `NT=cross-linking mass spectrometry;AC=MS:1003213`)
 
 ## Adding a New Dataset
 
@@ -53,16 +55,30 @@ Common SDRF columns for crosslinking experiments include:
 4. Ensure all required columns are present and properly formatted
 5. Validate the SDRF file using appropriate validation tools
 
-## SDRF Validation
+## Validation
 
-SDRF files should be validated before submission. You can use tools like:
-- [sdrf-pipelines](https://github.com/bigbio/sdrf-pipelines) for validation
-- ProteomeXchange submission validation tools
+SDRF files must validate against three templates: **ms-proteomics** (v1.1.0), **crosslinking** (v1.0.0), and a **species template** (human, vertebrates, invertebrates, or plants).
 
-**Automated Validation**: All pull requests that modify `*.sdrf.tsv` files are automatically validated using the sdrf-pipelines tool before they can be merged into the main branch. The validation checks:
+### Local Validation
+
+```bash
+pip install sdrf-pipelines
+
+# For a human crosslinking dataset:
+parse_sdrf validate-sdrf --sdrf_file datasets/PXD012345/PXD012345.sdrf.tsv \
+  -t ms-proteomics -t crosslinking -t human
+
+# For a yeast crosslinking dataset:
+parse_sdrf validate-sdrf --sdrf_file datasets/PXD012345/PXD012345.sdrf.tsv \
+  -t ms-proteomics -t crosslinking -t invertebrates
+```
+
+### Automated Validation
+
+All pull requests that modify `*.sdrf.tsv` files are automatically validated by the CI workflow. The workflow auto-detects the organism from each SDRF file and selects the appropriate species template. Validation checks include:
 - File format and structure
-- Required columns presence
-- Ontology term correctness
+- Required columns presence (including crosslinking-specific columns)
+- Ontology term correctness using `NT=;AC=` format
 - Data consistency
 
 ## Contributing

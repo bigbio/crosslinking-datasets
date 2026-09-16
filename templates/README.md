@@ -36,23 +36,28 @@ This directory contains template SDRF files that can be used as a starting point
 #### Instrument and Analysis Parameters
 - **comment[instrument]**: Mass spectrometry instrument model
 - **comment[modification parameters]**: Variable modifications (oxidation, deamidation, etc.)
-  - Format: `<ontology>:<id>; <modification name>; TA:<mass>`
-  - Example: `MS:1001460; Oxidation; TA:15.99491`
+  - Format: `NT=<name>;AC=<ontology>:<id>;TA=<target residue>;MT=<Fixed|Variable>`
+  - Example: `NT=Oxidation;AC=UNIMOD:35;TA=M;MT=Variable`
   - **Note**: Multiple `comment[modification parameters]` columns can exist in the same SDRF file to represent different types of modifications (e.g., one for variable PTMs, another for the crosslinker)
-- **comment[modification parameters]** (crosslinker): Crosslinker modification
-  - Format: `<ontology>:<id>; <crosslinker name>; TA:<mass>`
-  - Example: `UNIMOD:1896; DSS crosslink; TA:138.06808`
+- **comment[modification parameters]** (crosslinker): Crosslinker as a modification
+  - Format: `NT=<crosslinker name>;AC=UNIMOD:<id>;TA=<target residue>;MT=Variable`
+  - Example: `NT=DSS crosslink;AC=UNIMOD:1896;TA=K;MT=Variable`
   - This is typically in a separate column from other modification parameters to distinguish crosslinker modifications
+- **comment[cross-linker]**: Cross-linker reagent using XLMOD ontology
+  - Format: `NT=<crosslinker name>;AC=XLMOD:<id>`
+  - Example: `NT=DSS;AC=XLMOD:02001`
+- **comment[chemical cross-linking coupled with ms]**: XL-MS experiment type
+  - Example: `NT=cross-linking mass spectrometry;AC=MS:1003213`
 - **comment[cleavage agent details]**: Protease used for digestion
-  - Format: `<ontology>:<id>; <protease name>`
-  - Example: `MS:1001251; Trypsin`
+  - Format: `NT=<protease name>;AC=<ontology>:<id>`
+  - Example: `NT=Trypsin;AC=MS:1001251`
 
 #### Data Files
 - **comment[data file]**: Raw data file name
 - **comment[file uri]**: Full URI/URL to access the data file
 
 #### Experimental Factors
-- **factor value[crosslinker]**: Type of crosslinker used (e.g., DSS, BS3, EDC)
+- **factor value[crosslinker]**: Type of crosslinker used (e.g., `DSS`, `BS3`, `EDC`)
 
 ### Common Crosslinkers
 
@@ -64,26 +69,29 @@ This directory contains template SDRF files that can be used as a starting point
 
 ### Ontology Terms
 
-Use appropriate ontology terms where possible:
+Use appropriate ontology terms in `NT=;AC=` format:
 - **MS** (Mass Spectrometry ontology) for mass spectrometry instruments and methods - prefix: `MS:`
 - **UNIMOD** for modifications - prefix: `UNIMOD:`
+- **XLMOD** for cross-linkers - prefix: `XLMOD:`
 - **PRIDE** (PRIDE ontology) for proteomics-specific terms - prefix: `PRIDE:`
 - **NCBITaxon** for organisms - prefix: `NCBITaxon:`
 - **EFO** (Experimental Factor Ontology) for biological characteristics - prefix: `EFO:`
 
-Format: `<ontology>:<id>; <term name>; [TA:<value>]`
+Format: `NT=<term name>;AC=<ontology>:<id>[;TA=<target>;MT=<modification type>]`
 
 Examples:
-- `MS:1001251; Trypsin` (protease)
-- `MS:1001460; Oxidation; TA:15.99491` (variable modification)
-- `UNIMOD:1896; DSS crosslink; TA:138.06808` (crosslinker)
+- `NT=Trypsin;AC=MS:1001251` (protease)
+- `NT=Oxidation;AC=UNIMOD:35;TA=M;MT=Variable` (variable modification)
+- `NT=DSS;AC=XLMOD:02001` (cross-linker)
+- `NT=DSS crosslink;AC=UNIMOD:1896;TA=K;MT=Variable` (crosslinker as modification)
 
 ### Validation
 
 Before submitting, validate your SDRF file using:
 ```bash
 pip install sdrf-pipelines
-parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv
+parse_sdrf validate-sdrf --sdrf_file your_file.sdrf.tsv \
+  -t ms-proteomics -t crosslinking -t human
 ```
 
 ### Example Datasets
